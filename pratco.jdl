@@ -1,0 +1,47 @@
+entity Establishment {
+	name String required,
+    cnpj String required,
+    image Blob required
+}
+
+entity Address {
+	cep String required,
+    street String required,
+    number String required,
+    neighborhood String required,
+    city String required,
+    state String required
+}
+
+entity Food {
+	name String required,
+    description String required,
+	quantity Long required,
+    quantityType QuantityType required,
+    originalPrice Long required,
+	price Long required,
+    dueDate Instant required,
+    image Blob required
+}
+
+enum QuantityType {
+    UNITY, LITER, WEIGHT
+}
+
+relationship OneToOne {
+    Address{establishment(name)} to Establishment,
+}
+
+relationship ManyToOne {
+	Establishment{user(login)} to User,
+    Food{establishment(name)} to Establishment
+}
+
+// Set pagination options
+paginate Establishment, Food with infinite-scroll
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
